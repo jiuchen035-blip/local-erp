@@ -111,7 +111,7 @@ sequenceDiagram
     R->>B: POST /v1/chat/completions
     Note over B: 请求侧：tools 定义 → 文本协议注入 prompt<br/>用户请求置底 + 禁止复述工具说明
     B->>M: Playwright 注入并发送
-    M-->>B: 输出 &lt;tool_call&gt;{"name":"search_products"}&lt;/tool_call&gt;
+    M-->>B: 输出 tool_call 标记 + JSON 参数（name=search_products）
     Note over B: 响应侧：正则解析 → 还原为 OpenAI tool_calls
     B-->>R: tool_calls（标准结构）
     R-->>A: tool_calls
