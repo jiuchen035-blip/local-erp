@@ -6,7 +6,7 @@
 
 单机运行 · 数据不上云 · 自带 JRE 免安装分发 · AI 零成本可跑
 
-[![Release](https://img.shields.io/badge/release-v0.6.0-2ea44f?style=flat-square)](../../releases)
+[![Release](https://img.shields.io/badge/release-v0.6.0-2ea44f?style=flat-square)](https://github.com/jiuchen035-blip/local-erp/releases)
 [![Java](https://img.shields.io/badge/Java-17-ED8B00?style=flat-square&logo=openjdk&logoColor=white)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3-6DB33F?style=flat-square&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Vue](https://img.shields.io/badge/Vue-3-4FC08D?style=flat-square&logo=vuedotjs&logoColor=white)](https://vuejs.org/)
@@ -191,7 +191,7 @@ sequenceDiagram
 
 ### 方式一：直接用打包好的程序（推荐给使用者）
 
-1. 到 [Releases](../../releases) 下载 `账管卫士-绿色版-x.x.x.zip`
+1. 到 [Releases](https://github.com/jiuchen035-blip/local-erp/releases) 下载 `账管卫士-绿色版-x.x.x.zip`
 2. **解压到任意目录**（必须解压，解压后 exe 旁边要能看到 `app/` 和 `runtime/`）
 3. 双击 `账管卫士.exe` → 浏览器自动打开管理界面
 4. 默认账号 `admin / admin123`（首次登录后请修改密码）
