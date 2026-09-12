@@ -1,0 +1,9 @@
+.two { display: flex; gap: 20rpx; padding: 20rpx 24rpx; }
+.half { flex: 1; background: #fff; border-radius: 16rpx; padding: 24rpx; text-align: center; border: 2rpx solid var(--erp-border, #e5e9f0); }
+.half.on { border-color: #2563eb; background: #eff6ff; }
+.h-label { font-size: 24rpx; color: #667085; }
+.h-val { font-size: 36rpx; font-weight: bold; color: #1d2939; margin-top: 8rpx; }
+.l-row { display: flex; justify-content: space-between; align-items: center; padding: 24rpx; }
+.l-name { font-weight: 600; }
+.l-amt { color: #dc2626; font-weight: bold; }
+.center { text-align: center; padding: 40rpx; }

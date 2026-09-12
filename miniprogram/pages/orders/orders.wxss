@@ -1,0 +1,20 @@
+.bar { padding: 20rpx 24rpx; }
+.f-btn { background: #fff; border-radius: 12rpx; padding: 16rpx 24rpx; font-size: 26rpx; color: #475467; display: inline-block; }
+.b-row { display: flex; justify-content: space-between; padding: 24rpx; }
+.b-no { font-weight: 600; }
+.b-amt { font-weight: bold; text-align: right; }
+.center { text-align: center; padding: 40rpx; }
+.pager { display: flex; gap: 24rpx; align-items: center; justify-content: center; padding: 20rpx; }
+.card { background: #fff; border-radius: 16rpx; margin: 16rpx 24rpx; padding: 20rpx; box-shadow: 0 2rpx 8rpx rgba(16,24,40,.06); }
+.mask { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 9; display: flex; align-items: flex-end; justify-content: center; }
+.dialog { width: 100%; background: #fff; border-radius: 24rpx 24rpx 0 0; padding: 36rpx 32rpx calc(36rpx + env(safe-area-inset-bottom)); max-height: 80vh; overflow-y: auto; }
+.d-title { font-size: 32rpx; font-weight: bold; margin-bottom: 16rpx; }
+.d-meta { font-size: 24rpx; color: #667085; line-height: 1.7; margin-bottom: 16rpx; }
+.d-items-head { font-size: 24rpx; color: #98a2b3; margin: 16rpx 0 8rpx; }
+.d-item { display: flex; padding: 12rpx 0; border-bottom: 1rpx solid #f0f2f5; font-size: 26rpx; }
+.di-name { flex: 2; }
+.di-q { flex: 1; text-align: center; }
+.di-p { flex: 1; text-align: center; }
+.di-a { flex: 1; text-align: right; }
+.d-total { text-align: right; font-weight: bold; margin-top: 12rpx; }
+.d-remark { font-size: 24rpx; color: #667085; margin-top: 8rpx; }

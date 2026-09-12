@@ -1,0 +1,74 @@
+<wxs src="../../utils/format.wxs" module="fmt" />
+<view class="bar">
+  <input class="kw" placeholder="搜商品名 / SKU / 条码" value="{{keyword}}" bindinput="onKw" confirm-type="search" />
+  <view class="seg">
+    <view class="seg-item {{view === 'cat' ? 'on' : ''}}" bindtap="setView" data-view="cat">分类</view>
+    <view class="seg-item {{view === 'all' ? 'on' : ''}}" bindtap="setView" data-view="all">全部</view>
+  </view>
+  <view class="add-btn" bindtap="openAdd">＋ 新增</view>
+</view>
+
+<view class="crumb" wx:if="{{view === 'cat' && (catL1 || catL2 || catL3)}}">
+  <text class="crumb-item" bindtap="crumbTo" data-lvl="0">全部分类</text>
+  <text wx:if="{{catL1}}" class="crumb-item" bindtap="crumbTo" data-lvl="1"> › {{catL1 === '__unc__' ? '未分类' : catL1}}</text>
+  <text wx:if="{{catL2}}" class="crumb-item" bindtap="crumbTo" data-lvl="2"> › {{catL2}}</text>
+  <text wx:if="{{catL3}}"> › {{catL3}}</text>
+</view>
+
+<view class="card cat-row" wx:for="{{paged}}" wx:key="index" wx:if="{{view === 'cat' && item.isCat}}"
+  data-row="{{item}}" bindtap="tapRow">
+  <view class="c-icon">{{item.unc ? '❓' : '📁'}}</view>
+  <view class="c-main">
+    <view class="c-name">{{item.name}}</view>
+    <view class="muted">{{item.count}} 个商品</view>
+  </view>
+  <view class="arrow">›</view>
+</view>
+
+<view class="card p-row" wx:for="{{paged}}" wx:key="id" wx:if="{{view === 'all' || !item.isCat}}">
+  <view class="p-main">
+    <view class="p-name">{{item.name}} <text wx:if="{{fmt.isPeer(item.sku)}}" class="tag-peer">同行</text></view>
+    <view class="muted">{{item.sku}} ｜ {{item.spec ? item.spec + ' ｜ ' : ''}}{{item.category || '未分类'}}</view>
+  </view>
+  <view class="p-right">
+    <view class="p-stock {{item.stock <= (item.safeStock || 0) ? 'tag-danger' : ''}}">{{item.stock}}</view>
+    <view class="p-price">{{item.salePrice}} 元</view>
+  </view>
+  <view class="p-ops">
+    <text class="op-edit" data-row="{{item}}" catchtap="openEdit">编辑</text>
+    <text class="op-del" data-row="{{item}}" catchtap="del">删除</text>
+  </view>
+</view>
+<view wx:if="{{!paged.length && !loading}}" class="muted center">
+  {{view === 'cat' && !catL1 ? '选择上方分类查看商品' : '没有匹配的商品'}}
+</view>
+<view class="pager">
+  <button size="mini" disabled="{{page <= 1}}" bindtap="prevPage">上一页</button>
+  <text class="muted">第 {{page}} 页 ｜ 共 {{total}} 条</text>
+  <button size="mini" disabled="{{page * 15 >= total}}" bindtap="nextPage">下一页</button>
+</view>
+
+<view wx:if="{{addDialog}}" class="mask" bindtap="closeAdd">
+  <view class="dialog" catchtap="noop">
+    <view class="d-title">{{editing ? '编辑商品' : '新增商品'}}</view>
+    <input class="ipt" placeholder="商品名称（必填）" value="{{form.name}}" data-field="name" bindinput="setForm" />
+    <input class="ipt" type="digit" placeholder="零售价" value="{{form.salePrice}}" data-field="salePrice" bindinput="setForm" />
+    <input class="ipt" type="digit" placeholder="成本价" value="{{form.costPrice}}" data-field="costPrice" bindinput="setForm" />
+    <view class="c-row">
+      <input class="ipt" placeholder="单位" value="{{form.unit}}" data-field="unit" bindinput="setForm" />
+      <input class="ipt" placeholder="条码" value="{{form.barcode}}" data-field="barcode" bindinput="setForm" />
+    </view>
+    <input class="ipt" placeholder="规格（如 500ml / 4kg干粉，可空）" value="{{form.spec}}" data-field="spec" bindinput="setForm" />
+    <picker range="{{l1Options}}" bindchange="setFormCat1">
+      <view class="pick-val">一级分类：{{form.category || '点击选择'}}</view>
+    </picker>
+    <picker range="{{l2Options}}" bindchange="setFormCat2">
+      <view class="pick-val">二级分类：{{form.subCategory || '点击选择'}}</view>
+    </picker>
+    <picker range="{{l3Options}}" bindchange="setForm" data-field="sub2Category">
+      <view class="pick-val">三级分类：{{form.sub2Category || '点击选择'}}</view>
+    </picker>
+    <view class="muted" style="margin: 4rpx 0 16rpx">SKU 自动生成；新分类需先在电脑端商品管理维护</view>
+    <button class="btn-primary btn-block" loading="{{saving}}" bindtap="save">保存</button>
+  </view>
+</view>

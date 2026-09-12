@@ -1,0 +1,31 @@
+<view class="bar">
+  <input class="kw" placeholder="搜 SKU / 商品名" value="{{keyword}}" bindinput="onKw" confirm-type="search" />
+</view>
+<view class="cats">
+  <picker bindchange="setFilter" data-field="filterPartner" range="{{partners}}" range-key="name">
+    <view class="cat-tag">{{filterPartner ? '同行已选' : '按同行'}} ▾</view>
+  </picker>
+  <picker bindchange="setFilter" data-field="filterCategory" range="{{categories}}">
+    <view class="cat-tag">{{filterCategory || '按分类'}} ▾</view>
+  </picker>
+  <view class="cat-tag" bindtap="setFilter" data-field="filterCategory" data-value="">清除</view>
+</view>
+<view class="card ps-row" wx:for="{{paged}}" wx:key="id">
+  <view class="ps-main">
+    <view class="ps-name">{{item.productName}}</view>
+    <view class="muted">{{item.partnerName}} ｜ {{item.sku}} ｜ {{item.category || '未分类'}}</view>
+  </view>
+  <view class="ps-right">
+    <view class="ps-price">{{item.lastPrice}} 元</view>
+    <view class="ps-ops">
+      <text bindtap="edit" data-row="{{item}}">编辑</text>
+      <text class="danger" bindtap="del" data-row="{{item}}">删除</text>
+    </view>
+  </view>
+</view>
+<view wx:if="{{!paged.length}}" class="muted center">还没有同行库存记录</view>
+<view class="pager">
+  <button size="mini" disabled="{{page <= 1}}" bindtap="prevPage">上一页</button>
+  <text class="muted">第 {{page}} 页 ｜ 共 {{total}} 条</text>
+  <button size="mini" disabled="{{page * 15 >= total}}" bindtap="nextPage">下一页</button>
+</view>

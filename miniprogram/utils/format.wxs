@@ -1,0 +1,18 @@
+// WXS 模块：WXML 模板里只能调用 WXS 函数，普通 JS 方法绑定不生效（会渲染成空）
+// 注意 WXS 是精简版 JS：没有 Number() 构造器，数值转换用 parseFloat
+var fmt = {
+  money: function (v) {
+    var n = parseFloat(v)
+    if (isNaN(n)) n = 0
+    return '￥' + n.toFixed(2)
+  },
+  billType: function (t) {
+    var m = { PURCHASE: '采购入库', SALE: '销售出库', PURCHASE_RETURN: '采购退货',
+      SALE_RETURN: '销售退货', LOSS: '报损', GAIN: '盘盈', TRANSFER: '调拨' }
+    return m[t] || t
+  },
+  isPeer: function (sku) {
+    return !!sku && sku.substring(0, 3) === 'PS-'
+  }
+}
+module.exports = fmt

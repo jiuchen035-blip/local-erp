@@ -1,0 +1,21 @@
+page {
+  background: #f4f6fa;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 28rpx;
+  color: #1d2939;
+}
+.card {
+  background: #fff;
+  border-radius: 20rpx;
+  margin: 20rpx 24rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(16, 24, 40, .06);
+}
+.card-title { font-weight: 600; margin-bottom: 16rpx; }
+.btn-primary {
+  background: #2563eb !important; color: #fff !important;
+  border-radius: 12rpx !important; font-weight: 600;
+}
+.btn-block { width: 100% !important; }
+.tag-danger { color: #dc2626; font-weight: 600; }
+.muted { color: #98a2b3; font-size: 24rpx; }

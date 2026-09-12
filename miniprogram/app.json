@@ -1,0 +1,37 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/order-create/order-create",
+    "pages/products/products",
+    "pages/ai/ai",
+    "pages/mine/mine",
+    "pages/login/login",
+    "pages/alerts/alerts",
+    "pages/peer-stock/peer-stock",
+    "pages/peer-sources/peer-sources",
+    "pages/inspections/inspections",
+    "pages/orders/orders",
+    "pages/partners/partners",
+    "pages/ledger/ledger"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#101828",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "账管卫士",
+    "backgroundColor": "#f4f6fa"
+  },
+  "tabBar": {
+    "color": "#667085",
+    "selectedColor": "#2563eb",
+    "backgroundColor": "#ffffff",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "看板" },
+      { "pagePath": "pages/order-create/order-create", "text": "开单" },
+      { "pagePath": "pages/products/products", "text": "商品" },
+      { "pagePath": "pages/ai/ai", "text": "AI 助手" },
+      { "pagePath": "pages/mine/mine", "text": "我的" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

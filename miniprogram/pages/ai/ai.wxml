@@ -1,0 +1,20 @@
+<view class="msgs">
+  <view wx:for="{{msgs}}" wx:key="index" id="msg-{{index}}" class="bubble {{item.role}}">
+    <view wx:if="{{item.loading}}" class="dots">思考中…（网页模型可能需要较长时间）</view>
+    <block wx:else>
+      <text user-select>{{item.text}}</text>
+      <view wx:if="{{item.draft}}" class="draft">
+        <view class="draft-title">📋 草稿单 {{item.draft.billNo}}</view>
+        <view class="draft-row" wx:for="{{item.draft.items}}" wx:for-item="it" wx:key="index">
+          {{it.productName || it.productId}} × {{it.quantity}} @ ￥{{it.price}}</view>
+        <view wx:if="{{item.draft.peerPurchaseNo}}" class="draft-peer">同行采购草稿：{{item.draft.peerPurchaseNo}}（确认后两张一起过账）</view>
+        <button size="mini" class="post-btn" data-draft="{{item.draft}}" bindtap="postDraft">确认过账</button>
+      </view>
+    </block>
+  </view>
+  <view id="msg-bottom"></view>
+</view>
+<view class="input-bar">
+  <input value="{{input}}" bindinput="onInput" placeholder="问库存、应收、年检，或让我开单…" confirm-type="send" bindconfirm="send" />
+  <button class="send-btn" size="mini" loading="{{sending}}" bindtap="send">发送</button>
+</view>

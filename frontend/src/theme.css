@@ -1,0 +1,44 @@
+/* ===== 账管卫士 全局主题层（v0.5.0 UI 规范）===== */
+:root {
+  --erp-primary: #2563eb;          /* 主色：信赖蓝 */
+  --erp-primary-dark: #1d4ed8;
+  --erp-success: #16a34a;          /* 毛利/成功 */
+  --erp-warning: #d97706;          /* 预警 */
+  --erp-danger: #dc2626;           /* 风险/挂账 */
+  --erp-bg: #f4f6fa;               /* 页面背景 */
+  --erp-card-bg: #ffffff;
+  --erp-border: #e5e9f0;
+  --erp-radius: 10px;
+  --erp-shadow: 0 1px 3px rgba(16, 24, 40, .06), 0 1px 2px rgba(16, 24, 40, .04);
+  --erp-sidebar-bg: #101828;       /* 侧边栏 */
+  --erp-sidebar-active: #2563eb;
+  --erp-font: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+/* Element Plus 变量覆盖（全部页面自动受益） */
+:root {
+  --el-color-primary: var(--erp-primary);
+  --el-color-success: var(--erp-success);
+  --el-color-warning: var(--erp-warning);
+  --el-color-danger: var(--erp-danger);
+  --el-border-radius-base: 6px;
+  --el-font-family: var(--erp-font);
+}
+
+body {
+  background: var(--erp-bg);
+  font-family: var(--erp-font);
+  color: #1d2939;
+}
+
+/* 卡片统一质感 */
+.el-card {
+  border-radius: var(--erp-radius);
+  border-color: var(--erp-border);
+  box-shadow: var(--erp-shadow) !important;
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.el-card:hover { box-shadow: 0 4px 12px rgba(16, 24, 40, .1) !important; }
+
+/* 表格头部语义化底色 */
+.el-table th.el-table__cell { background: #f8fafc; color: #475467; font-weight: 600; }

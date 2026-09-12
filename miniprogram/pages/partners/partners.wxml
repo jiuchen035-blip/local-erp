@@ -1,0 +1,31 @@
+<view class="tabs">
+  <view class="tab {{tab === 'SUPPLIER' ? 'on' : ''}}" bindtap="setTab" data-tab="SUPPLIER">供应商</view>
+  <view class="tab {{tab === 'CUSTOMER' ? 'on' : ''}}" bindtap="setTab" data-tab="CUSTOMER">客户</view>
+</view>
+<view class="bar">
+  <input class="kw" placeholder="搜名称 / 电话" value="{{keyword}}" bindinput="onKw" confirm-type="search" />
+  <button size="mini" class="btn-primary" bindtap="add">+ 新增</button>
+</view>
+<view class="card p-row" wx:for="{{paged}}" wx:key="id">
+  <view class="p-main">
+    <view class="p-name">{{item.name}}</view>
+    <view class="muted">{{item.phone || '无电话'}} ｜ {{item.address || '无地址'}}</view>
+  </view>
+  <view class="p-ops"><text bindtap="edit" data-row="{{item}}">编辑</text></view>
+</view>
+<view wx:if="{{!paged.length}}" class="muted center">暂无{{tab === 'SUPPLIER' ? '供应商' : '客户'}}，点右上角新增</view>
+<view wx:if="{{total > 15}}" class="pager">
+  <button size="mini" disabled="{{page <= 1}}" bindtap="prevPage">上一页</button>
+  <text class="muted">第 {{page}} 页</text>
+  <button size="mini" disabled="{{page * 15 >= total}}" bindtap="nextPage">下一页</button>
+</view>
+
+<view wx:if="{{dialog}}" class="mask" bindtap="closeDialog">
+  <view class="dialog" catchtap="noop">
+    <view class="d-title">{{form.id ? '编辑' : '新增'}}{{form.type === 'SUPPLIER' ? '供应商' : '客户'}}</view>
+    <input class="ipt" placeholder="名称（必填）" value="{{form.name}}" data-field="name" bindinput="setForm" />
+    <input class="ipt" placeholder="电话" value="{{form.phone}}" data-field="phone" bindinput="setForm" />
+    <input class="ipt" placeholder="地址" value="{{form.address}}" data-field="address" bindinput="setForm" />
+    <button class="btn-primary btn-block" bindtap="save">保存</button>
+  </view>
+</view>

@@ -1,0 +1,61 @@
+server:
+  port: 8080
+
+app:
+  # 启动后自动用系统默认浏览器打开管理界面（打包成 exe 一键启动用）
+  auto-open-browser: true
+
+# 日志同时写文件（打包成 exe 后没有黑色控制台窗口，出问题看 data/logs/local-erp.log）
+# erp.data.root 由 ErpApplication.main 启动第一行设置（打包 exe → 程序包目录；开发态 → 工作目录）
+logging:
+  file:
+    name: ${erp.data.root:.}/data/logs/local-erp.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
+
+spring:
+  application:
+    name: local-erp
+  datasource:
+    # 本地数据库文件，启动自动创建 data/erp.db（exe 打包后固定在程序包目录内）
+    url: jdbc:sqlite:${erp.data.root:.}/data/erp.db
+    driver-class-name: org.sqlite.JDBC
+  sql:
+    init:
+      mode: always          # schema.sql 内部用 IF NOT EXISTS，可重复执行
+      schema-locations: classpath:schema.sql
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# ============ AI 模型配置 ============
+# 统一走 OpenAI 兼容协议（/v1/chat/completions）
+#  - 先用 API Key 测试：provider=openai-compatible，填 base-url + api-key + model
+#      GLM:      base-url: https://open.bigmodel.cn/api/paas/v4        model: glm-4-flash
+#      DeepSeek: base-url: https://api.deepseek.com/v1                 model: deepseek-chat
+#  - 后续切本地：安装 Ollama 后改为
+#      base-url: http://localhost:11434/v1   api-key 留空   model: qwen2.5:7b
+ai:
+  # provider: auto=自动降级（有Key走API → Ollama在线走本地 → 都没有用网页版模型，免API）
+  #           也可固定为 deepseek/zhipu/qwen/moonshot/siliconflow/openai/ollama/webchat
+  provider: auto
+  base-url: https://api.deepseek.com/v1
+  api-key: "在此填入你的API-KEY"
+  model: deepseek-chat
+  # RAG 用向量库类型（预留）：sqlite-vss / chroma
+  rag:
+    enabled: false
+  # 向量模型（知识库语义检索用）：enabled=false 时自动降级为关键词检索，功能照常可用
+  # 启用方法：改 enabled: true 并三选一：
+  #   智谱:      base-url: https://open.bigmodel.cn/api/paas/v4   model: embedding-3   api-key: 智谱的KEY
+  #   硅基流动:  base-url: https://api.siliconflow.cn/v1          model: BAAI/bge-m3   api-key: 硅基流动的KEY
+  #   本地Ollama: base-url: http://localhost:11434/v1             model: bge-m3        api-key 留空
+  embedding:
+    enabled: false
+    base-url: https://open.bigmodel.cn/api/paas/v4
+    api-key: ""
+    model: embedding-3

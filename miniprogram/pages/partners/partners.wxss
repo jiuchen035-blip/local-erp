@@ -1,0 +1,16 @@
+.tabs { display: flex; padding: 20rpx 24rpx; gap: 16rpx; }
+.tab { flex: 1; text-align: center; padding: 18rpx; background: #fff; border-radius: 12rpx; color: #475467; }
+.tab.on { background: #2563eb; color: #fff; font-weight: 600; }
+.bar { display: flex; gap: 16rpx; padding: 0 24rpx 20rpx; }
+.kw { flex: 1; background: #fff; border-radius: 12rpx; padding: 16rpx 24rpx; }
+.p-row { display: flex; justify-content: space-between; align-items: center; padding: 24rpx; }
+.p-name { font-weight: 600; }
+.p-ops { color: #2563eb; font-size: 26rpx; }
+.center { text-align: center; padding: 40rpx; }
+.pager { display: flex; gap: 24rpx; align-items: center; justify-content: center; padding: 20rpx; }
+.mask { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 9; display: flex; align-items: center; justify-content: center; }
+.dialog { width: 620rpx; background: #fff; border-radius: 20rpx; padding: 36rpx 32rpx; }
+.d-title { font-weight: bold; font-size: 32rpx; margin-bottom: 24rpx; }
+.ipt { background: #f4f6fa; border-radius: 12rpx; padding: 18rpx 24rpx; margin-bottom: 20rpx; }
+.btn-primary { background: #2563eb !important; color: #fff !important; }
+.btn-block { width: 100% !important; }

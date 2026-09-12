@@ -1,0 +1,16 @@
+<view class="two">
+  <view class="half {{tab === 'RECEIVABLE' ? 'on' : ''}}" bindtap="setTab" data-tab="RECEIVABLE">
+    <view class="h-label">应收合计</view><view class="h-val">￥{{recvTotal}}</view>
+  </view>
+  <view class="half {{tab === 'PAYABLE' ? 'on' : ''}}" bindtap="setTab" data-tab="PAYABLE">
+    <view class="h-label">应付合计</view><view class="h-val">￥{{payTotal}}</view>
+  </view>
+</view>
+<view class="card l-row" wx:for="{{rows}}" wx:key="partnerId">
+  <view class="l-main">
+    <view class="l-name">{{item.name}}</view>
+    <view class="muted">挂账 {{item.cnt}} 笔 ｜ 期初 ￥{{tab === 'RECEIVABLE' ? item.openingReceivable : item.openingPayable}}</view>
+  </view>
+  <view class="l-amt">￥{{item.amount}}</view>
+</view>
+<view wx:if="{{!rows.length}}" class="muted center">暂无{{tab === 'RECEIVABLE' ? '应收' : '应付'}}欠款 👍</view>

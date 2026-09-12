@@ -1,0 +1,45 @@
+<wxs src="../../utils/format.wxs" module="fmt" />
+<view class="bar">
+  <picker range="{{typeOptions}}" range-key="n" bindchange="setType">
+    <view class="f-btn">{{typeIndex >= 0 ? typeOptions[typeIndex].n : '按类型筛选'}} ▾</view>
+  </picker>
+</view>
+<view class="card b-row" wx:for="{{paged}}" wx:key="id" data-id="{{item.id}}" bindtap="openDetail">
+  <view class="b-main">
+    <view class="b-no">{{item.billNo}}</view>
+    <view class="muted">{{fmt.billType(item.type)}} ｜ {{item.createdAt}} ｜ {{item.paid === 0 ? '挂账' : '已结清'}}</view>
+  </view>
+  <view class="b-right">
+    <view class="b-amt">{{fmt.money(item.totalAmount)}}</view>
+    <text class="muted">{{item.status === 'POSTED' ? '已过账' : '草稿'}}</text>
+  </view>
+</view>
+<view wx:if="{{!paged.length && !loading}}" class="muted center">没有单据</view>
+<view class="pager">
+  <button size="mini" disabled="{{page <= 1}}" bindtap="prevPage">上一页</button>
+  <text class="muted">第 {{page}} 页 ｜ 共 {{total}} 条</text>
+  <button size="mini" disabled="{{page * 15 >= total}}" bindtap="nextPage">下一页</button>
+</view>
+
+<view wx:if="{{detailDialog}}" class="mask" bindtap="closeDetail">
+  <view class="dialog" catchtap="noop">
+    <view class="d-title">{{detail.bill.billNo}}（{{fmt.billType(detail.bill.type)}}）</view>
+    <view class="d-meta">
+      <view>{{detail.warehouseName}}{{detail.toWarehouseName ? ' → ' + detail.toWarehouseName : ''}}</view>
+      <view>{{detail.partnerName || '无往来单位'}} ｜ {{detail.bill.paid === 0 ? '挂账' : '已结清'}} ｜ {{detail.bill.status === 'POSTED' ? '已过账' : '草稿'}}</view>
+      <view>时间：{{detail.bill.postedAt || detail.bill.createdAt}}</view>
+    </view>
+    <view class="d-items-head">商品明细</view>
+    <view class="d-item d-item-head">
+      <text class="di-name">商品</text><text class="di-q">数量</text><text class="di-p">单价</text><text class="di-a">金额</text>
+    </view>
+    <view class="d-item" wx:for="{{detail.items}}" wx:key="index">
+      <text class="di-name">{{item.productName}}</text>
+      <text class="di-q">{{item.quantity}}</text>
+      <text class="di-p">{{item.effPrice}}</text>
+      <text class="di-a">{{item.amount}}</text>
+    </view>
+    <view class="d-total">合计：￥{{detail.bill.totalAmount}}</view>
+    <view class="d-remark" wx:if="{{detail.bill.remark}}">备注：{{detail.bill.remark}}</view>
+  </view>
+</view>

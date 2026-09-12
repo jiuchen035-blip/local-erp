@@ -1,0 +1,27 @@
+<view wx:if="{{pending.length}}" class="card pending-box">
+  <view class="pending-title">待确认过账（{{pending.length}}）</view>
+  <view class="p-item" wx:for="{{pending}}" wx:key="id">
+    <view class="p-main">
+      <view class="p-name">销售 {{item.billNo}}</view>
+      <view class="muted">关联采购 {{item.purchaseNo}} ｜ 折后 ￥{{item.totalAmount}}</view>
+    </view>
+    <button size="mini" class="btn-ok" loading="{{confirming}}" data-id="{{item.id}}" catchtap="confirmPeer">确认过账</button>
+  </view>
+  <view class="muted">确认后自动生成采购入库 + 销售出库，并计入下方调货记录</view>
+</view>
+
+<view class="bar">
+  <picker bindchange="setPartner" range="{{partners}}" range-key="name">
+    <view class="f-btn">{{filterPartner ? '已选同行' : '按同行筛选'}} ▾</view>
+  </picker>
+  <input class="kw" placeholder="搜商品" value="{{keyword}}" bindinput="onKw" confirm-type="search" />
+</view>
+<view class="card r-row" wx:for="{{list}}" wx:key="index">
+  <view class="r-main">
+    <view class="r-name">{{item.productName}}</view>
+    <view class="muted">从 {{item.partnerName}} 调 ｜ 累计 {{item.totalQty}}{{item.unit || ''}}</view>
+    <view class="muted">最近：{{item.lastTime}}</view>
+  </view>
+  <view class="r-price">￥{{item.lastPrice}}</view>
+</view>
+<view wx:if="{{!list.length}}" class="muted center">还没有已过账的调货记录：开同行调货单后在上方「待确认过账」里确认</view>

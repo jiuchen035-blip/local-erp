@@ -1,0 +1,8 @@
+.wrap { min-height: 100vh; background: linear-gradient(160deg,#101828,#1d2939 60%,#33415c); padding-top: 160rpx; }
+.brand { text-align: center; color: #fff; margin-bottom: 60rpx; }
+.brand-icon { width: 120rpx; height: 120rpx; border-radius: 28rpx; margin: 0 auto 20rpx; background: linear-gradient(135deg,#2563eb,#4f8ef7); display: flex; align-items: center; justify-content: center; font-size: 52rpx; font-weight: bold; box-shadow: 0 16rpx 40rpx rgba(37,99,235,.35); }
+.brand-name { font-size: 40rpx; font-weight: bold; }
+.brand-sub { font-size: 24rpx; color: #98a2b3; margin-top: 8rpx; }
+.form { margin: 0 48rpx; padding: 40rpx 32rpx; }
+.ipt { background: #f4f6fa; border-radius: 12rpx; padding: 20rpx 24rpx; margin-bottom: 24rpx; }
+.hint { text-align: center; color: #98a2b3; font-size: 22rpx; margin-top: 20rpx; }

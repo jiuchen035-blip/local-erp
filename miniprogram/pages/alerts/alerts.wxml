@@ -1,0 +1,17 @@
+<view class="tip">共 {{total}} 个商品低于安全库存；调货商品可设为不监控</view>
+<view class="card a-row" wx:for="{{paged}}" wx:key="id">
+  <view class="a-main">
+    <view class="a-name">{{item.name}}</view>
+    <view class="muted">库存 <text class="tag-danger">{{item.stock}}</text> ｜ 安全库存 {{item.safeStock}}</view>
+  </view>
+  <view class="a-ops">
+    <button size="mini" class="btn-primary" data-row="{{item}}" bindtap="restock">补货</button>
+    <button size="mini" data-row="{{item}}" bindtap="mute">不监控</button>
+  </view>
+</view>
+<view wx:if="{{!paged.length && !loading}}" class="muted center">没有需要预警的商品</view>
+<view class="pager">
+  <button size="mini" disabled="{{page <= 1}}" bindtap="prevPage">上一页</button>
+  <text class="muted">第 {{page}} 页 ｜ 共 {{total}} 条</text>
+  <button size="mini" disabled="{{page * 50 >= total}}" bindtap="nextPage">下一页</button>
+</view>

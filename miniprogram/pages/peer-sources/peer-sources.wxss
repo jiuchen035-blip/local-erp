@@ -1,0 +1,12 @@
+.bar { display: flex; gap: 16rpx; padding: 20rpx 24rpx; }
+.f-btn { background: #fff; border-radius: 12rpx; padding: 16rpx 24rpx; font-size: 26rpx; }
+.kw { flex: 1; background: #fff; border-radius: 12rpx; padding: 16rpx 24rpx; }
+.r-row { display: flex; justify-content: space-between; padding: 24rpx; }
+.r-name { font-weight: 600; }
+.r-price { color: #2563eb; font-weight: bold; }
+.center { text-align: center; padding: 40rpx; }
+.pending-box { margin: 20rpx 24rpx; border: 1rpx solid #f5dab1; background: #fffbeb; border-radius: 12rpx; padding: 20rpx; }
+.pending-title { font-weight: 600; margin-bottom: 8rpx; }
+.p-item { display: flex; justify-content: space-between; align-items: center; padding: 12rpx 0; border-bottom: 1rpx solid #fdecc8; }
+.p-name { font-weight: 600; }
+.btn-ok { background: #2563eb; color: #fff; }

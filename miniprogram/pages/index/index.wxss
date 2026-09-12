@@ -1,0 +1,9 @@
+.grid { display: flex; flex-wrap: wrap; padding: 20rpx 12rpx 0; }
+.kpi { width: 33%; background: #fff; border-radius: 16rpx; margin: 8rpx; padding: 20rpx; border-top: 6rpx solid #eee; box-shadow: 0 2rpx 8rpx rgba(16,24,40,.06); }
+.kpi-label { font-size: 22rpx; color: #667085; }
+.kpi-val { font-size: 32rpx; font-weight: bold; margin-top: 8rpx; }
+.top-row { display: flex; justify-content: space-between; padding: 12rpx 0; border-bottom: 1rpx solid #f0f2f5; }
+.quick { display: flex; margin: 20rpx 24rpx; background: #fff; border-radius: 20rpx; padding: 20rpx; }
+.q-item { flex: 1; text-align: center; font-size: 24rpx; }
+.q-item text { display: block; }
+.q-icon { font-size: 40rpx; margin-bottom: 8rpx; }

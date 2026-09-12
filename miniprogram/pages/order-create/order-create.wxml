@@ -1,0 +1,124 @@
+<view class="card">
+  <view class="f-row">
+    <text class="f-label">仓库</text>
+    <picker range="{{warehouses}}" range-key="name" bindchange="setWh">
+      <view class="f-val">{{warehouses[warehouseIndex].name || '选择仓库'}} ▾</view>
+    </picker>
+    <text class="f-label" style="margin-left:30rpx">类型</text>
+    <picker range="{{typeOptions}}" range-key="n" bindchange="setType">
+      <view class="f-val">{{typeName}} ▾</view>
+    </picker>
+    <view style="margin-left:auto"><text class="orders-link" bindtap="goOrders">单据列表 ›</text></view>
+  </view>
+  <view class="f-row" wx:if="{{type !== 'LOSS' && type !== 'GAIN' && type !== 'TRANSFER'}}">
+    <text class="f-label">{{type === 'SALE' || type === 'SALE_RETURN' ? '客户' : '供应商'}}</text>
+    <input class="f-ipt" placeholder="可输入新{{type === 'SALE' || type === 'SALE_RETURN' ? '客户' : '供应商'}}自动建档（可空）"
+      value="{{partnerName}}" bindinput="setPartnerName" />
+  </view>
+</view>
+
+<view class="card">
+  <view class="card-title">添加自有商品（搜名称 / SKU）</view>
+  <input class="ipt" placeholder="输入关键词出候选列表" value="{{pickKw}}" bindinput="setPickKw" />
+  <view wx:if="{{pickShow}}" class="pick-list">
+    <view class="pick-row" wx:for="{{pickList}}" wx:key="id" data-index="{{index}}" bindtap="pickProduct">
+      <text class="pick-name">{{item.name}}<block wx:if="{{item.spec}}">（{{item.spec}}）</block>（库存{{item.stock}}）</text>
+      <text class="pick-price">￥{{type === 'PURCHASE' ? item.costPrice : item.salePrice}}</text>
+    </view>
+    <view wx:if="{{!pickList.length}}" class="pick-new" bindtap="openQuickCreate">
+      + 新增商品「{{pickKw}}」到商品档案
+    </view>
+  </view>
+</view>
+
+<view class="card" wx:if="{{type === 'SALE'}}">
+  <view class="peer-head" bindtap="setPeerShow">
+    <text>🔄 同行商品（从同行库存选品，或自定义登记）</text>
+    <text class="muted">{{peerShow ? '收起 ▴' : '展开 ▾'}}</text>
+  </view>
+  <view wx:if="{{peerShow}}">
+    <view class="peer-sup-row">
+      <input class="ipt" placeholder="调货供应商（点选下方，或输入新名称自动建档）" value="{{peerPartnerName}}" bindinput="setPeerPartnerName" bindfocus="focusSupplier" />
+      <view wx:if="{{peerShow && supSug.length}}" class="pick-list sup-sug">
+        <view class="pick-row" wx:for="{{supSug}}" wx:key="id" data-index="{{index}}" catchtap="pickSupplier">
+          <text class="pick-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="peer-search-row">
+      <input class="ipt" placeholder="搜商品名 / SKU" value="{{peerKeyword}}" bindinput="setPeerKw" bindconfirm="searchPeer" />
+      <button size="mini" class="btn-primary" bindtap="searchPeer">查询</button>
+    </view>
+    <view class="pick-row" wx:for="{{peerPaged}}" wx:key="id" data-index="{{index}}" bindtap="pickPeer">
+      <text class="pick-name">{{item.productName}}</text>
+      <text class="pick-price">{{item.partnerName}} ｜ 调货价 ￥{{item.lastPrice}}</text>
+    </view>
+    <view wx:if="{{peerLoaded && !peerList.length}}" class="muted center">该同行库存为空，可在下方自定义登记</view>
+    <view wx:if="{{!peerLoaded}}" class="muted center">选择调货供应商后点「查询」带出同行库存</view>
+    <view class="peer-pager" wx:if="{{peerList.length > 5}}">
+      <text class="muted" bindtap="peerPrev">‹ 上一页</text>
+      <text class="muted">第 {{peerPage}} 页</text>
+      <text class="muted" bindtap="peerNext">下一页 ›</text>
+    </view>
+    <view class="custom-box">
+      <view class="muted">同行库存里没有？自定义登记：</view>
+      <input class="ipt" placeholder="商品名称（必填）" value="{{custom.name}}" bindinput="setCustom" data-field="name" />
+      <view class="c-row">
+        <input class="ipt" type="digit" placeholder="调货价（必填）" value="{{custom.price}}" bindinput="setCustom" data-field="price" />
+        <input class="ipt" placeholder="分类（可空）" value="{{custom.category}}" bindinput="setCustom" data-field="category" />
+      </view>
+      <button size="mini" class="btn-primary" bindtap="addCustomPeer">登记并加入明细</button>
+    </view>
+  </view>
+</view>
+
+<view class="card">
+  <view class="card-title">商品明细（{{lines.length}}）</view>
+  <view wx:if="{{!lines.length}}" class="muted">还没有明细行：搜自有商品、或从同行库存选品</view>
+  <view class="line" wx:for="{{lines}}" wx:key="index">
+    <view class="line-head">
+      <text class="line-name">{{item.name}}</text>
+      <text wx:if="{{item.peer}}" class="tag-peer">同行·{{item.peerPartnerName}}</text>
+      <text wx:if="{{item.sku}}" class="muted sku">{{item.sku}}</text>
+      <text class="del" data-index="{{index}}" bindtap="delLine">✕</text>
+    </view>
+    <view class="line-body">
+      <view class="fld">数量 <input type="number" value="{{item.quantity}}" data-index="{{index}}" bindinput="setQty" class="ipt-n" /></view>
+      <view class="fld">售价 <input type="digit" value="{{item.price}}" data-index="{{index}}" bindinput="setPrice" class="ipt-n" /></view>
+      <view wx:if="{{item.peer}}" class="fld">调货价 <input type="digit" value="{{item.peerPrice}}" data-index="{{index}}" bindinput="setPeerPrice" class="ipt-n" /></view>
+    </view>
+  </view>
+</view>
+
+<view class="card">
+  <view class="f-row">
+    <text class="f-label">结算</text>
+    <radio-group bindchange="onPaid">
+      <label><radio value="1" checked="{{paid === 1}}" /> 现结</label>
+      <label style="margin-left:24rpx"><radio value="0" checked="{{paid === 0}}" /> 挂账</label>
+    </radio-group>
+  </view>
+  <view class="f-row">
+    <text class="f-label">折扣%</text>
+    <input type="number" value="{{discount}}" bindinput="onDiscount" class="ipt-n" />
+  </view>
+  <view class="total-row">折后合计：<text class="total-val">￥{{total}}</text></view>
+  <button class="btn-primary btn-block" loading="{{saving}}" bindtap="save">保存并过账</button>
+  <button class="btn-block btn-draft" loading="{{saving}}" bindtap="saveDraft">存草稿（暂不过账）</button>
+  <view class="muted center" style="margin-top:10rpx">含同行调货行：确认后自动生成「同行采购入库」+「销售出库」两张关联单</view>
+</view>
+
+<view wx:if="{{quick.show}}" class="mask" bindtap="closeQuick">
+  <view class="dialog" catchtap="noop">
+    <view class="d-title">快速建档「{{quick.form.name}}」</view>
+    <input class="ipt" placeholder="商品名称（必填）" value="{{quick.form.name}}" data-field="name" bindinput="quickForm" />
+    <input class="ipt" placeholder="规格（可空，如 500ml）" value="{{quick.form.spec}}" data-field="spec" bindinput="quickForm" />
+    <view class="c-row">
+      <input class="ipt" type="digit" placeholder="零售价" value="{{quick.form.salePrice}}" data-field="salePrice" bindinput="quickForm" />
+      <input class="ipt" type="digit" placeholder="成本价" value="{{quick.form.costPrice}}" data-field="costPrice" bindinput="quickForm" />
+    </view>
+    <input class="ipt" placeholder="单位（默认个）" value="{{quick.form.unit}}" data-field="unit" bindinput="quickForm" />
+    <view class="muted" style="margin-bottom:16rpx">建档后自动加入明细；更完整的信息到商品页或电脑端维护</view>
+    <button class="btn-primary btn-block" loading="{{quick.saving}}" bindtap="saveQuickCreate">保存并加入明细</button>
+  </view>
+</view>

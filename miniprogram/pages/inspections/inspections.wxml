@@ -1,0 +1,102 @@
+<view class="stat-grid">
+  <view class="stat {{activeStatus === 'OVERDUE' ? 'stat-on' : ''}}" style="border-top-color:#f56c6c" data-status="OVERDUE" bindtap="tapStat">
+    <view class="stat-label">已到期待检</view><view class="stat-val" style="color:#f56c6c">{{stat.overdue}} 条</view>
+  </view>
+  <view class="stat {{activeStatus === 'DUE' ? 'stat-on' : ''}}" style="border-top-color:#e6a23c" data-status="DUE" bindtap="tapStat">
+    <view class="stat-label">即将到期</view><view class="stat-val" style="color:#e6a23c">{{stat.due}} 条</view>
+  </view>
+  <view class="stat {{activeStatus === 'NORMAL' ? 'stat-on' : ''}}" style="border-top-color:#67c23a" data-status="NORMAL" bindtap="tapStat">
+    <view class="stat-label">正常</view><view class="stat-val" style="color:#67c23a">{{stat.normal}} 条</view>
+  </view>
+  <view class="stat {{activeStatus === '' ? 'stat-on' : ''}}" style="border-top-color:#98a2b3" data-status="" bindtap="tapStat">
+    <view class="stat-label">档案总数</view><view class="stat-val" style="color:#98a2b3">{{stat.total}} 条</view>
+  </view>
+</view>
+
+<view class="card filter-bar">
+  <view class="f-line">
+    <picker range="{{statusOptions}}" range-key="n" bindchange="setStatus">
+      <view class="f-btn">{{statusOptions[statusIndex].n}} ▾</view>
+    </picker>
+    <picker range="{{purposeOptions}}" bindchange="setPurpose">
+      <view class="f-btn">{{purposeIndex >= 0 ? purposeOptions[purposeIndex] : '全部用途'}} ▾</view>
+    </picker>
+    <input class="f-ipt" type="number" placeholder="提醒天数" value="{{filters.dueDays}}" bindinput="setDueDays" bindblur="blurDueDays" />
+  </view>
+  <view class="f-line">
+    <input class="f-ipt kw" placeholder="客户名称 / 电话" value="{{filters.keyword}}" bindinput="setKw" bindconfirm="searchKw" confirm-type="search" />
+    <button size="mini" class="btn-primary" bindtap="searchKw">查询</button>
+  </view>
+</view>
+
+<view class="select-bar">
+  <view class="chk {{allChecked ? 'chk-on' : ''}}" bindtap="toggleAll">{{allChecked ? '✓' : ''}}</view>
+  <text class="muted">全选 ｜ 共 {{rows.length}} 条，{{checkedCount ? '已选 ' + checkedCount + ' 条' : '未勾选'}}</text>
+  <text wx:if="{{checkedCount}}" class="muted link" bindtap="clearChecked">取消选择</text>
+</view>
+
+<view class="card i-row {{item.status === 'OVERDUE' ? 'row-overdue' : ''}}" wx:for="{{paged}}" wx:key="id">
+  <view class="chk" data-id="{{item.id}}" bindtap="toggleCheck">{{checked[item.id] ? '✓' : ''}}</view>
+  <view class="i-main" data-id="{{item.id}}" bindtap="toggleCheck">
+    <view class="i-name">{{item.customerName}} <text class="tag s-{{item.status}}">{{item.statusLabel}}</text></view>
+    <view class="muted">{{item.phone || '无电话'}} ｜ {{item.spec || '-'}} × {{item.quantity}}</view>
+    <view class="muted">本次 {{item.inspectDate}} → 下次 <text class="nd {{item.status === 'OVERDUE' ? 'nd-overdue' : item.status === 'DUE' ? 'nd-due' : ''}}">{{item.nextDate}}</text></view>
+  </view>
+  <view class="i-ops">
+    <text class="op" data-row="{{item}}" catchtap="renew">续检</text>
+    <text class="op" data-row="{{item}}" catchtap="edit">编辑</text>
+    <text wx:if="{{isAdmin}}" class="op op-del" data-row="{{item}}" catchtap="del">删除</text>
+  </view>
+</view>
+<view wx:if="{{!paged.length}}" class="muted center">没有符合条件的年检记录</view>
+<view class="pager">
+  <button size="mini" disabled="{{page <= 1}}" bindtap="prevPage">上一页</button>
+  <text class="muted">第 {{page}} 页 ｜ 共 {{rows.length}} 条</text>
+  <button size="mini" disabled="{{page * 15 >= rows.length}}" bindtap="nextPage">下一页</button>
+</view>
+<view class="fab" bindtap="add">＋ 登记年检</view>
+
+<view wx:if="{{checkedCount}}" class="batch-bar">
+  <text class="b-info">已选 {{checkedCount}} 条</text>
+  <button size="mini" class="btn-primary" loading="{{busy}}" bindtap="batchRenew">批量续检</button>
+  <button size="mini" class="btn-del" loading="{{busy}}" bindtap="batchDel">批量删除</button>
+</view>
+
+<view wx:if="{{renewDialog}}" class="mask" bindtap="closeRenew">
+  <view class="dialog" catchtap="noop">
+    <view class="d-x" catchtap="closeRenew">✕</view>
+    <view class="d-title">续检</view>
+    <view class="d-line">客户：<text class="b">{{renewForm.name}}</text></view>
+    <picker mode="date" value="{{renewForm.date}}" bindchange="setRenewDate">
+      <view class="ipt pick-val">本次年检日期：{{renewForm.date}} ▾</view>
+    </picker>
+    <view class="muted" style="margin: 8rpx 0 20rpx">将生成一条新记录，下次年检默认为本次日期+12个月，可再编辑</view>
+    <button class="btn-primary btn-block" loading="{{renewing}}" bindtap="doRenew">确认续检</button>
+  </view>
+</view>
+
+<view wx:if="{{dialog}}" class="mask" bindtap="closeDialog">
+  <view class="dialog" catchtap="noop">
+    <view class="d-x" catchtap="closeDialog">✕</view>
+    <view class="d-title">{{form.id ? '编辑年检记录' : '新增年检记录'}}</view>
+    <input class="ipt" placeholder="客户名称（必填）" value="{{form.customerName}}" data-field="customerName" bindinput="setForm" />
+    <input class="ipt" type="number" placeholder="联系电话" value="{{form.phone}}" data-field="phone" bindinput="setForm" />
+    <input class="ipt" placeholder="地址" value="{{form.address}}" data-field="address" bindinput="setForm" />
+    <picker range="{{purposeOptions}}" bindchange="setFormPurpose">
+      <view class="ipt pick-val">用途：{{form.purpose || '点击选择'}} ▾</view>
+    </picker>
+    <input class="ipt" placeholder="灭火器规格（如：4kg干粉 / 35kg推车）" value="{{form.spec}}" data-field="spec" bindinput="setForm" />
+    <view class="c-row">
+      <input class="ipt" type="number" placeholder="数量" value="{{form.quantity}}" data-field="quantity" bindinput="setForm" />
+      <input class="ipt" type="digit" placeholder="年检单价" value="{{form.price}}" data-field="price" bindinput="setForm" />
+    </view>
+    <picker mode="date" value="{{form.inspectDate}}" data-field="inspectDate" bindchange="setForm">
+      <view class="ipt pick-val">本次年检日期：{{form.inspectDate || '点击选择'}} ▾</view>
+    </picker>
+    <picker mode="date" value="{{form.nextDate || form.inspectDate}}" data-field="nextDate" bindchange="setForm">
+      <view class="ipt pick-val">下次年检日期：{{form.nextDate || '默认本次+12个月'}} ▾</view>
+    </picker>
+    <input class="ipt" placeholder="备注" value="{{form.remark}}" data-field="remark" bindinput="setForm" />
+    <button class="btn-primary btn-block" loading="{{saving}}" bindtap="save">保存</button>
+  </view>
+</view>

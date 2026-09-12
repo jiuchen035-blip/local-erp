@@ -1,0 +1,21 @@
+<view class="head">
+  <view class="avatar">{{user[0] || '?'}}</view>
+  <view>
+    <view class="u-name">{{user}}</view>
+    <view class="u-role">{{role === 'ADMIN' ? '管理员' : '操作员'}}</view>
+  </view>
+</view>
+
+<view class="card group">
+  <view class="g-item" data-url="/pages/alerts/alerts" bindtap="go"><text>⚠️ 库存预警</text><text class="arrow">›</text></view>
+  <view class="g-item" data-url="/pages/inspections/inspections" bindtap="go"><text>🧯 灭火器年检</text><text class="arrow">›</text></view>
+  <view class="g-item" data-url="/pages/ledger/ledger" bindtap="go"><text>💰 应收应付</text><text class="arrow">›</text></view>
+</view>
+<view class="card group">
+  <view class="g-item" data-url="/pages/peer-stock/peer-stock" bindtap="go"><text>📦 同行库存</text><text class="arrow">›</text></view>
+  <view class="g-item" data-url="/pages/peer-sources/peer-sources" bindtap="go"><text>📓 调货记录</text><text class="arrow">›</text></view>
+  <view class="g-item" data-url="/pages/partners/partners" bindtap="go"><text>🤝 往来单位（供应商/客户）</text><text class="arrow">›</text></view>
+</view>
+<view class="card group">
+  <view class="g-item logout" bindtap="logout"><text>退出登录</text></view>
+</view>

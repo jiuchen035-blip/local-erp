@@ -1,0 +1,13 @@
+<view class="wrap">
+  <view class="brand">
+    <view class="brand-icon">卫</view>
+    <view class="brand-name">账管卫士</view>
+    <view class="brand-sub">AI 原生商家经营系统</view>
+  </view>
+  <view class="card form">
+    <input class="ipt" placeholder="用户名" value="{{username}}" data-field="username" bindinput="onInput" />
+    <input class="ipt" placeholder="密码" password value="{{password}}" data-field="password" bindinput="onInput" />
+    <button class="btn-primary btn-block" loading="{{loading}}" bindtap="login">登 录</button>
+    <view class="hint">首次使用：内置管理员 admin / admin123</view>
+  </view>
+</view>

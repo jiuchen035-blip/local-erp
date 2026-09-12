@@ -1,0 +1,6 @@
+.tip { padding: 20rpx 24rpx; font-size: 24rpx; color: #92400e; background: #fffbeb; }
+.a-row { display: flex; justify-content: space-between; align-items: center; padding: 24rpx; }
+.a-name { font-weight: 600; }
+.a-ops { display: flex; flex-direction: column; gap: 10rpx; }
+.center { text-align: center; padding: 40rpx; }
+.pager { display: flex; gap: 24rpx; align-items: center; justify-content: center; padding: 20rpx; }

@@ -1,0 +1,30 @@
+<wxs src="../../utils/format.wxs" module="fmt" />
+<view class="grid">
+  <view class="kpi" style="border-top-color:#2563eb"><view class="kpi-label">今日销售额</view><view class="kpi-val">{{fmt.money(d.todaySale)}}</view></view>
+  <view class="kpi" style="border-top-color:#16a34a"><view class="kpi-label">今日毛利</view><view class="kpi-val">{{fmt.money(d.todayProfit)}}</view></view>
+  <view class="kpi" style="border-top-color:#7c3aed"><view class="kpi-label">本月销售额</view><view class="kpi-val">{{fmt.money(d.monthSale)}}</view></view>
+  <view class="kpi" style="border-top-color:#059669"><view class="kpi-label">本月毛利</view><view class="kpi-val">{{fmt.money(d.monthProfit)}}</view></view>
+  <view class="kpi" style="border-top-color:#d97706"><view class="kpi-label">库存价值</view><view class="kpi-val">{{fmt.money(d.inventoryValue)}}</view></view>
+  <view class="kpi" style="border-top-color:#dc2626" data-url="/pages/alerts/alerts" bindtap="go"><view class="kpi-label">库存预警</view><view class="kpi-val tag-danger">{{d.lowStockCount || 0}} 个 ›</view></view>
+</view>
+
+<view class="card">
+  <view class="card-title">近 14 天销售趋势</view>
+  <canvas canvas-id="trend" style="width:100%;height:300rpx"></canvas>
+</view>
+
+<view class="card">
+  <view class="card-title">商品销售 Top5</view>
+  <view wx:if="{{!top.length}}" class="muted">暂无销售数据</view>
+  <view wx:for="{{top}}" wx:key="name" class="top-row">
+    <text>{{index + 1}}. {{item.name}}</text>
+    <text class="muted">{{item.qty}} 件 ｜ {{fmt.money(item.amount)}}</text>
+  </view>
+</view>
+
+<view class="quick">
+  <view class="q-item" data-url="/pages/alerts/alerts" bindtap="go"><text class="q-icon">⚠️</text><text>库存预警</text></view>
+  <view class="q-item" data-url="/pages/peer-stock/peer-stock" bindtap="go"><text class="q-icon">📦</text><text>同行库存</text></view>
+  <view class="q-item" data-url="/pages/inspections/inspections" bindtap="go"><text class="q-icon">🧯</text><text>灭火器年检</text></view>
+  <view class="q-item" data-url="/pages/ledger/ledger" bindtap="go"><text class="q-icon">💰</text><text>应收应付</text></view>
+</view>

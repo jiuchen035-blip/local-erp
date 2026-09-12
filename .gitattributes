@@ -1,0 +1,20 @@
+# 统一换行符，避免 Windows / Linux 混用导致整个文件 diff 爆炸
+* text=auto eol=lf
+
+# Windows 脚本必须保留 CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# 二进制文件不做换行转换
+*.png binary
+*.jpg binary
+*.ico binary
+*.jar binary
+*.db binary
+*.zip binary
+*.exe binary
+
+# 语言统计：文档不算代码
+*.md linguist-documentation
+docs-代码说明书/* linguist-documentation
